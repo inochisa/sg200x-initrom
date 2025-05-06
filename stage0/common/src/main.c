@@ -1,5 +1,6 @@
 
 #include "common.h"
+#include "serial.h"
 
 int main(void)
 {
@@ -7,6 +8,7 @@ int main(void)
 	console_puts("\n");
 	console_puts("hello fip\n");
 	console_puts("\n");
+
 	while (1)
 		;
 

@@ -1,0 +1,11 @@
+
+#ifndef _MAPPING_H
+#define _MAPPING_H
+
+#define UART0_BASE		0x04140000
+#define UART1_BASE		0x04150000
+#define UART2_BASE		0x04160000
+#define UART3_BASE		0x04170000
+#define UART4_BASE		0x041c0000
+
+#endif /* _MAPPING_H */
