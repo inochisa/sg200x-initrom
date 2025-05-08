@@ -29,8 +29,7 @@ CFLAGS = \
 
 LDFLAGS = \
 	--fatal-warnings -Os \
-	--gc-sections \
-	--script arch/$(ARCH)/ld/stage0.ld.S
+	--gc-sections
 
 ARCH_ASRC := $(wildcard arch/$(ARCH)/*.S)
 ARCH_CSRC := $(wildcard arch/$(ARCH)/*.c)
@@ -61,8 +60,11 @@ $(O)/%.S.o: %.S
 	mkdir -p $(dir $@)
 	$(AS) $(INCLUDES) $(CFLAGS) $(ASFLAGS) -c $< -o $@
 
-$(O)/$(NAME).elf: $(OBJS)
-	$(LD) $(LDFLAGS) -o $@ $^
+$(O)/arch/$(ARCH)/stage0.ld: arch/$(ARCH)/ld/stage0.ld.S
+	$(CC) $(INCLUDES) -E -o $@ $<
+
+$(O)/$(NAME).elf: $(O)/arch/$(ARCH)/stage0.ld $(OBJS)
+	$(LD) $(LDFLAGS) --script $(O)/arch/$(ARCH)/stage0.ld -o $@ $(OBJS)
 
 $(O)/$(NAME).bin: $(O)/$(NAME).elf
 	@$(SIZE) $<

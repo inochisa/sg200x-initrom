@@ -1,20 +1,21 @@
+#include "mapping.h"
 
 OUTPUT_FORMAT("elf64-littleriscv")
 OUTPUT_ARCH(riscv)
 ENTRY(_start)
 
-#define BL2_BASE	0x05200200
-#define BL2_SIZE	0x00006000
+#define STAGE0_BASE	TPU_RAM_BASE
+#define STAGE0_SIZE	TPU_RAM_SIZE
 
 /*
 MEMORY {
-	RAM: ORIGIN = BL2_BASE, LENGTH = BL2_SIZE
+	RAM: ORIGIN = STAGE0_BASE, LENGTH = STAGE0_SIZE
 }
 */
 
 SECTIONS
 {
-	. = 0x0c000000;
+	. = STAGE0_BASE;
 	PROVIDE(_fw_start = .);
 
 	. = ALIGN(0x1000); /* Need this to create proper sections */

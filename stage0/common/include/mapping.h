@@ -8,4 +8,10 @@
 #define UART3_BASE		0x04170000
 #define UART4_BASE		0x041c0000
 
+#define MCU_RAM_BASE		0x05200000
+#define MCU_RAM_SIZE		0x6000
+
+#define TPU_RAM_BASE		0x0c000000
+#define TPU_RAM_SIZE		0x40000
+
 #endif /* _MAPPING_H */
