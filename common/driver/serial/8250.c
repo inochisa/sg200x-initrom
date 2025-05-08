@@ -1,5 +1,6 @@
 
 #include "common.h"
+#include "serial.h"
 
 #define UART_LCR_WLS_MSK 0x03       /* character length select mask */
 #define UART_LCR_WLS_5  0x00        /* 5 bit character length */
@@ -45,13 +46,15 @@ static struct dw_regs *uart = (struct dw_regs *)UART0_BASE;
 #define UART_SCR_OFFSET		0x1c	/* I/O: Scratch Register */
 #define UART_MDR1_OFFSET	0x20	/* I/O:  Mode Register */
 
-static void *uart_base = (void *)UART0_BASE;
+static void *uart_base = NULL;
 
-void console_init(unsigned int uart_clk, unsigned int baud_rate)
+void fsbl_init_console(unsigned long base, unsigned int uart_clk, unsigned int baud_rate)
 {
 	uint32_t val;
 	int baudrate = baud_rate;
 	int uart_clock = uart_clk;
+
+	uart_base = (void *)base;
 
 	int divisor = uart_clock / (16 * baudrate);
 
@@ -71,7 +74,7 @@ void console_init(unsigned int uart_clk, unsigned int baud_rate)
 	writel(0x03, uart_base + UART_LCR_OFFSET);
 }
 
-void _uart_putc(uint8_t ch)
+static void _8250_putc(uint8_t ch)
 {
 	while ((readl(uart_base + UART_LSR_OFFSET) & UART_LSR_THRE) == 0)
 		;
@@ -79,25 +82,21 @@ void _uart_putc(uint8_t ch)
 	writel(ch, uart_base + UART_RBR_OFFSET);
 }
 
-void console_putc(uint8_t ch)
+static int _8250_tstc(void)
+{
+	return (!!(readl(uart_base + UART_LSR_OFFSET) & UART_LSR_DR));
+}
+
+void fsbl_putc(uint8_t ch)
 {
 	if (ch == '\n') {
-		_uart_putc('\r');
+		_8250_putc('\r');
 	}
-	_uart_putc(ch);
+
+	_8250_putc(ch);
 }
 
-void console_puts(char *str)
-{
-	if (!str)
-		return;
-
-	while (*str) {
-		console_putc(*str++);
-	}
-}
-
-void console_flush(void)
+void fsbl_flush(void)
 {
 	uint32_t mask = UART_LSR_THRE | UART_LSR_TEMT;
 
@@ -105,7 +104,7 @@ void console_flush(void)
 		;
 }
 
-int console_getc(void)
+int fsbl_getc(void)
 {
 	while ((readl(uart_base + UART_LSR_OFFSET) & UART_LSR_DR) == 0)
 		;
@@ -113,12 +112,7 @@ int console_getc(void)
 	return readl(uart_base + UART_RBR_OFFSET);
 }
 
-int uart_tstc(void)
+int fsbl_tstc(void)
 {
-	return (!!(readl(uart_base + UART_LSR_OFFSET) & UART_LSR_DR));
-}
-
-int console_tstc(void)
-{
-	return uart_tstc();
+	return _8250_tstc();
 }

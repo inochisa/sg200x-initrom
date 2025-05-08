@@ -5,5 +5,6 @@
 #include <stdint.h>
 
 typedef unsigned long size_t;
+#define NULL			((void *)0)
 
 #endif /* _TYPE_H */
