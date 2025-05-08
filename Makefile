@@ -22,6 +22,7 @@ CFLAGS = \
 	-mcmodel=medany \
 	-mabi=lp64d \
 	-ffreestanding  \
+	-ffunction-sections -fdata-sections \
 	-Wa,--fatal-warnings
 
 LDFLAGS = \
@@ -33,7 +34,8 @@ COMMON_OBJS := $(COMMON_CSRC:%=$(BUILD)/%.o)
 COMMON_INCS := common/include
 COMMON_INCLUDES := $(addprefix -I,$(COMMON_INCS))
 
-STAGE0_SRC := $(shell find stage0/arch/$(ARCH) -name '*.c' -or -name '*.S')
+STAGE0_SRC := $(shell find stage0/arch/$(ARCH) -name '*.c' -or -name '*.S') \
+              $(shell find stage0/common -name '*.c')
 STAGE0_OBJS := $(STAGE0_SRC:%=$(BUILD)/%.o)
 STAGE0_INCS := stage0/arch/$(ARCH)/ $(COMMON_INCS)
 STAGE0_INCLUDES := $(addprefix -I,$(STAGE0_INCS))
