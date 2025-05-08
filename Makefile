@@ -29,9 +29,9 @@ LDFLAGS = \
 	--fatal-warnings -Os \
 	--gc-sections
 
-COMMON_CSRC := $(shell find common/ -name '*.c')
+COMMON_CSRC := $(shell find common/src -name '*.c')
 COMMON_OBJS := $(COMMON_CSRC:%=$(BUILD)/%.o)
-COMMON_INCS := common/include
+COMMON_INCS := common/include common/arch/$(ARCH)
 COMMON_INCLUDES := $(addprefix -I,$(COMMON_INCS))
 
 STAGE0_SRC := $(shell find stage0/arch/$(ARCH) -name '*.c' -or -name '*.S') \
@@ -47,15 +47,15 @@ all: $(BUILD)/stage0.bin
 clean:
 	rm -r $(O)
 
-$(filter %.o, $(COMMON_OBJS)): $(BUILD)/%.c.o: %.c
+$(filter %.c.o, $(COMMON_OBJS)): $(BUILD)/%.c.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(COMMON_INCLUDES) $(CFLAGS) -c $< -o $@
 
-$(filter %.o, $(STAGE0_OBJS)): $(BUILD)/%.S.o: %.S
+$(filter %.S.o, $(STAGE0_OBJS)): $(BUILD)/%.S.o: %.S
 	@mkdir -p $(dir $@)
 	$(AS) $(STAGE0_INCLUDES) $(CFLAGS) $(ASFLAGS) -c $< -o $@
 
-$(filter %.o, $(STAGE0_OBJS)): $(BUILD)/%.c.o: %.c
+$(filter %.c.o, $(STAGE0_OBJS)): $(BUILD)/%.c.o: %.c
 	@mkdir -p $(dir $@)
 	$(AS) $(STAGE0_INCLUDES) $(CFLAGS) -c $< -o $@
 
