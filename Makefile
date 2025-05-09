@@ -37,7 +37,7 @@ COMMON_INCLUDES := $(addprefix -I,$(COMMON_INCS))
 STAGE0_SRC := $(shell find stage0/arch/$(ARCH) -name '*.c' -or -name '*.S') \
               $(shell find stage0/common -name '*.c')
 STAGE0_OBJS := $(STAGE0_SRC:%=$(BUILD)/%.o)
-STAGE0_INCS := stage0/arch/$(ARCH)/ $(COMMON_INCS)
+STAGE0_INCS := stage0/arch/$(ARCH)/ stage0/common/include/ $(COMMON_INCS)
 STAGE0_INCLUDES := $(addprefix -I,$(STAGE0_INCS))
 
 .PHONY: clean all
