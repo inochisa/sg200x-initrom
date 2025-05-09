@@ -221,16 +221,13 @@ raw:
 		if ((*format == 'p') || (*format == 'P')) {
 			num = (uintptr_t)va_arg(args, void *);
 			type = *format;
-			continue;
 		} else if ((*format == 'd') || (*format == 'i')) {
 			num = (uintptr_t)va_arg(args, int);
 			type = *format;
-			continue;
 		} else if ((*format == 'u') || (*format == 'o') ||
 			   (*format == 'x') || (*format == 'X')) {
 			num = (uintptr_t)va_arg(args, unsigned int);
 			type = *format;
-			continue;
 		} else if (*format == 'l') {
 			if (format[1] == 'l') {
 				++format;
