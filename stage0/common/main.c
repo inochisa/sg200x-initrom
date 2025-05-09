@@ -5,9 +5,8 @@
 int main(void)
 {
 	fsbl_init_console(UART0_BASE, 25000000, 115200);
-	fsbl_puts("\n");
-	fsbl_puts("hello fip\n");
-	fsbl_puts("\n");
+
+	fsbl_printf("\nhello fip\n\n");
 
 	while (1)
 		;

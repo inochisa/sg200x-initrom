@@ -10,5 +10,7 @@ int fsbl_getc(void);
 void fsbl_flush(void);
 int fsbl_tstc(void);
 void fsbl_puts(char *str);
+int fsbl_snprintf(char *out, unsigned int out_len, const char *format, ...);
+int fsbl_printf(const char *format, ...);
 
 #endif /* _SERIAL_H */

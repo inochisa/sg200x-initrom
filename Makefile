@@ -29,7 +29,7 @@ LDFLAGS = \
 	--fatal-warnings -Os \
 	--gc-sections
 
-COMMON_CSRC := $(shell find common/src -name '*.c')
+COMMON_CSRC := $(shell find common/driver -name '*.c')
 COMMON_OBJS := $(COMMON_CSRC:%=$(BUILD)/%.o)
 COMMON_INCS := common/include common/arch/$(ARCH)
 COMMON_INCLUDES := $(addprefix -I,$(COMMON_INCS))
