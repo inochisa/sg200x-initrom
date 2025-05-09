@@ -15,7 +15,6 @@
 #define writew(v,c)	({ __io_bw(); __raw_writew((v),(volatile void *)(c)); __io_aw(); })
 #define writel(v,c)	({ __io_bw(); __raw_writel((v),(volatile void *)(c)); __io_aw(); })
 
-
 static inline int __ffs(unsigned long word)
 {
 	int num = 0;
