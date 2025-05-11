@@ -18,6 +18,7 @@ static void read_board_info(void)
 		    ddr_rate, (ddr_capacity << 7));
 }
 
+__attribute__((noreturn))
 int main(void)
 {
 	fsbl_init_console(UART0_BASE, 25000000, 115200);
@@ -28,6 +29,4 @@ int main(void)
 
 	while (1)
 		;
-
-	return 0;
 }
