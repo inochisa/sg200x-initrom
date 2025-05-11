@@ -1,3 +1,4 @@
+#include "mapping.h"
 #include "arch/csr.h"
 
 	.section .text, "ax", %progbits
@@ -63,11 +64,11 @@ _start:
 	li	t0, 0x2
 	csrs	0x7c1, t0
 
-	la sp, _fw_end
+	la	sp, _fw_end
 
-	la a3, _bss_start
-	la a4, _bss_end
-	sub a4, a4, a3
+	la	a3, _bss_start
+	la	a4, _bss_end
+	sub	a4, a4, a3
 
 bss_clear:
 	sd	x0, 0(a3)
