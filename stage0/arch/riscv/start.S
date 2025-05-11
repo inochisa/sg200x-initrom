@@ -64,7 +64,8 @@ _start:
 	li	t0, 0x2
 	csrs	0x7c1, t0
 
-	la	sp, _fw_end
+	li	sp, 0x05200400
+	// la	sp, _fw_end
 
 	la	a3, _bss_start
 	la	a4, _bss_end
