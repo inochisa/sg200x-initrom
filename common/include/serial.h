@@ -2,7 +2,7 @@
 #ifndef _SERIAL_H
 #define _SERIAL_H
 
-#include "common.h"
+#include "types.h"
 
 void fsbl_init_console(unsigned long base, unsigned int uart_clk, unsigned int baud_rate);
 void fsbl_putc(uint8_t ch);
