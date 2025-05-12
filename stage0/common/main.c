@@ -27,6 +27,7 @@ int main(void)
 	INFO("\nfip stage0:\n");
 
 	read_board_info();
+	rtc_init_stage0();
 
 	while (1)
 		;

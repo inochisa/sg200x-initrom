@@ -12,5 +12,6 @@ int parse_board_info(unsigned int pkg_type);
 
 extern uint8_t package_type;
 
+void rtc_init_stage0(void);
 
 #endif /* STAGE0_BOARD_H */

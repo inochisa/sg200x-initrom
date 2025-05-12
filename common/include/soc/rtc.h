@@ -1,0 +1,24 @@
+
+#ifndef _COMMON_SOC_RTC_H
+#define _COMMON_SOC_RTC_H
+
+#include "bits.h"
+
+#define RTC_CTRL_VERSION		0x0000
+#define RTC_CTRL0_UNLOCK		0x0004
+#define RTC_CTRL0			0x0008
+#define RTC_CTRL0_STATUS0		0x000c
+#define RTC_CTRL0_STATUS1		0x0010
+#define RTC_CTRL0_STATUS2		0x0014
+#define RTC_MCU_CTRL0			0x0020
+#define RTC_MCU_CTRL1			0x0024
+#define RTC_MACRO_DA_SOC_READY		0x148c
+
+#define RTC_CTRL0_UNLOCK_KEK			0xab18
+
+#define RTC_CTRL0_RTC_SOURCE			BIT(10)
+#define RTC_CTRL0_CLK32K_EN			BIT(11)
+
+#define RTC_CTRL0_STATUS_CLK32K_OUT		BIT(25)
+
+#endif /* _COMMON_SOC_RTC_H */

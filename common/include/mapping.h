@@ -21,6 +21,8 @@
 
 #define MCU_RAM_FOR_SP_BASE	0x05201000
 
+#define RTC_BASE		0x05250000
+
 #define TPU_RAM_BASE		0x0c000000
 #define TPU_RAM_SIZE		0x40000
 
