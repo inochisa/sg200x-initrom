@@ -8,6 +8,7 @@ OBJD := ${CROSS_COMPILE}objdump
 NM   := ${CROSS_COMPILE}nm
 SIZE := ${CROSS_COMPILE}size
 
+CHIP ?= CV181X
 ARCH ?= riscv
 ARCH_UPPER := $(shell echo $(ARCH) | tr '[:lower:]' '[:upper:]')
 
@@ -25,7 +26,8 @@ CFLAGS = \
 	-ffreestanding  \
 	-ffunction-sections -fdata-sections \
 	-Wa,--fatal-warnings \
-	-D$(ARCH_UPPER)
+	-D$(ARCH_UPPER) \
+	-D$(CHIP)
 
 LDFLAGS = \
 	--fatal-warnings -Os \
