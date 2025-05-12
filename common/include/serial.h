@@ -9,7 +9,7 @@ void fsbl_putc(uint8_t ch);
 int fsbl_getc(void);
 void fsbl_flush(void);
 int fsbl_tstc(void);
-void fsbl_puts(char *str);
+void fsbl_puts(const char *str);
 int fsbl_snprintf(char *out, unsigned int out_len, const char *format, ...)
 	__attribute__ ((format(printf, 3, 4)));
 int fsbl_printf(const char *format, ...)  __attribute__ ((format(printf, 1, 2)));

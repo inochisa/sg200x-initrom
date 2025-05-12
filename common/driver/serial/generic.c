@@ -3,7 +3,7 @@
 #include "serial.h"
 #include "string.h"
 
-void fsbl_puts(char *str)
+void fsbl_puts(const char *str)
 {
 	if (!str)
 		return;
