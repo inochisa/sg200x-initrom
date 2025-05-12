@@ -15,4 +15,8 @@
 #define writew(v,c)	({ __io_bw(); __raw_writew((v),(volatile void *)(c)); __io_aw(); })
 #define writel(v,c)	({ __io_bw(); __raw_writel((v),(volatile void *)(c)); __io_aw(); })
 
+#define SYS_COUNTER_FREQ		25000000
+
+void udelay(uint32_t usec);
+
 #endif /* _COMMON_H */

@@ -1,5 +1,5 @@
 #include "mapping.h"
-#include "arch/csr.h"
+#include "csr.h"
 
 	.section .text, "ax", %progbits
 	.align 3

@@ -9,6 +9,7 @@ NM   := ${CROSS_COMPILE}nm
 SIZE := ${CROSS_COMPILE}size
 
 ARCH ?= riscv
+ARCH_UPPER := $(shell echo $(ARCH) | tr '[:lower:]' '[:upper:]')
 
 O ?= build/$(ARCH)
 
@@ -23,13 +24,14 @@ CFLAGS = \
 	-mabi=lp64d \
 	-ffreestanding  \
 	-ffunction-sections -fdata-sections \
-	-Wa,--fatal-warnings
+	-Wa,--fatal-warnings \
+	-D$(ARCH_UPPER)
 
 LDFLAGS = \
 	--fatal-warnings -Os \
 	--gc-sections
 
-COMMON_CSRC := $(shell find common/driver -name '*.c')
+COMMON_CSRC := $(shell find common/driver -name '*.c') $(shell find common/arch/$(ARCH) -name '*.c')
 COMMON_OBJS := $(COMMON_CSRC:%=$(BUILD)/%.o)
 COMMON_INCS := common/include common/arch/$(ARCH)
 COMMON_INCLUDES := $(addprefix -I,$(COMMON_INCS))
