@@ -12,7 +12,7 @@ void rtc_init_stage0(void)
 
 	val = readl(RTC_BASE + RTC_CTRL0);
 	if (FIELD_GET(RTC_CTRL0_RTC_SOURCE, val) == 1) {
-		WARN("RTC is already inited\n");
+		WARN("RTC clock source is already processed\n");
 		goto end;
 	}
 
@@ -39,6 +39,33 @@ void rtc_init_stage0(void)
 	writel(val, RTC_BASE + RTC_CTRL0);
 
 end:
+	writel(0x1, RTC_BASE + RTC_CORE_EN_SHDN_REQ);
+	while (readl(RTC_BASE + RTC_CORE_EN_SHDN_REQ) != 0x1)
+	{ }
+
+	writel(0x1, RTC_BASE + RTC_CORE_EN_WARM_RST_REQ);
+	while (readl(RTC_BASE + RTC_CORE_EN_WARM_RST_REQ) != 0x1)
+	{ }
+
+	writel(0x1, RTC_BASE + RTC_CORE_EN_PWR_CYC_REQ);
+	while (readl(RTC_BASE + RTC_CORE_EN_PWR_CYC_REQ) != 0x1)
+	{ }
+
+	writel(0x1, RTC_BASE + RTC_CORE_EN_WDG_RST_REQ);
+	while (readl(RTC_BASE + RTC_CORE_EN_WDG_RST_REQ) != 0x1)
+	{ }
+
+	writel(0x1, RTC_BASE + RTC_POR_RST_CTRL);
+
+	writel(RTC_CTRL0_UNLOCK_KEK, RTC_BASE + RTC_CTRL0_UNLOCK);
+	val = readl(RTC_BASE + RTC_CTRL0);
+	val = 0xffff0000 | val | RTC_CTRL0_CLK32K_EN | RTC_CTRL0_HW_WDG_RST_EN;
+	writel(val, RTC_BASE + RTC_CTRL0);
+
+	val = readl(RTC_BASE + RTC_CORE_EN_PWR_VBAT_DET);
+	val &= ~RTC_CORE_EN_AUTO_POWER_UP;
+	writel(val, RTC_BASE + RTC_CORE_EN_PWR_VBAT_DET);
+
 	INFO("RTC is at stage0 state\n");
 	INFO("MCU ctrl0: 0x%08x, ctrl1: 0x%08x\n",
 	     readl(RTC_BASE + RTC_MCU_CTRL0), readl(RTC_BASE + RTC_MCU_CTRL1));
