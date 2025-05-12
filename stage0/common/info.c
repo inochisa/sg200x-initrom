@@ -1,5 +1,6 @@
 
 #include "common.h"
+#include "bits.h"
 #include "ddr.h"
 #include "board.h"
 

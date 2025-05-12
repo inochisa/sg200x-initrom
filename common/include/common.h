@@ -5,7 +5,6 @@
 #include "types.h"
 #include "romapi.h"
 #include "mapping.h"
-#include "bits.h"
 #include "io.h"
 
 #define readb(c)	({ uint8_t  __v; __io_br(); __v = __raw_readb((volatile void *)c); __io_ar(); __v; })

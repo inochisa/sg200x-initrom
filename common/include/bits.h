@@ -37,7 +37,8 @@ static inline int __ffs(unsigned long word)
 	return num;
 }
 
-#define GENMASK(h, l)			((1UL << ((h) + 1)) - (1UL << (l)))
+#define BIT(n)				(1UL << (n))
+#define GENMASK(h, l)			(BIT((h) + 1) - BIT((l)))
 #define FIELD_GET(_mask, _reg)		(((_reg) & (_mask)) >> __ffs(_mask))
 #define FIELD_PREP(_mask, _value)	(((_value) << __ffs(_mask)) & (_mask))
 
