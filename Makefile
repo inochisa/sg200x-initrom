@@ -23,6 +23,7 @@ CFLAGS = \
 	-march=rv64imafdcv_xtheadcmo_xtheadsync -mstrict-align \
 	-mcmodel=medany \
 	-mabi=lp64d \
+	-Os \
 	-ffreestanding  \
 	-ffunction-sections -fdata-sections \
 	-Wa,--fatal-warnings \
