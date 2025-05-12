@@ -23,17 +23,13 @@ enum BOOT_SOURCE {
 	BOOT_SRC_UART		= 0xcea5,
 };
 
-struct romapi {
-	int (*load_image)(void *buf, uint32_t offset, size_t image_size, int retry_num);
-	uint32_t (*image_crc)(const void *buf, int len);
-	int (*flash_init)(void);
-	enum BOOT_SOURCE (*get_boot_src)(void);
-	void (*set_boot_src)(enum BOOT_SOURCE src);
-	int (*get_number_of_retries)(void);
-	int (*verify_rsa)(void *message, size_t n, void *sig, enum RSA_TYPE RSA_TYPE);
-	int (*cryptodma_aes_decrypt)(void *plain, const void *encrypted, uint64_t len, uint8_t *key, uint8_t *iv);
-};
-
-struct romapi *get_romapi(void);
+int romapi_load_image(void *buf, uint32_t offset, size_t image_size, int retry_num);
+uint32_t romapi_image_crc(const void *buf, int len);
+int romapi_flash_init(void);
+enum BOOT_SOURCE romapi_get_boot_src(void);
+void romapi_set_boot_src(enum BOOT_SOURCE src);
+int romapi_get_number_of_retries(void);
+int romapi_verify_rsa(void *message, size_t n, void *sig, enum RSA_TYPE rsa_size);
+int romapi_cryptodma_aes_decrypt(void *plain, const void *encrypted, uint64_t len, uint8_t *key, uint8_t *iv);
 
 #endif /* _ROMAPI_H */
