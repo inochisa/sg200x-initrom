@@ -15,6 +15,9 @@ uint16_t ddr_rate;
 #define DDR_CAPACITY_MASK	GENMASK(28, 26)
 #define PKG_TYPE		GENMASK(31, 29)
 
+#define CHIPID_DDRCAP_MASK	GENMASK(7, 4)
+#define CHIPID_PAGEAGE_MASK	GENMASK(3, 0)
+
 int parse_board_info(unsigned int pkg_type)
 {
 	uint32_t efuse_leakage = readl(0x03050108);
@@ -81,18 +84,21 @@ int parse_board_info(unsigned int pkg_type)
 		return -1;
 	}
 
-	switch (ddr_capacity) {
-	case DDR_CAPACITY_512M:
-		chip_id = (package_type == PKG_QFN88 ? 0x1810c : 0x1810f);
+	if ((ddr_capacity < DDR_CAPACITY_512M) || (ddr_capacity > DDR_CAPACITY_4G))
+		return -1;
+
+	chip_id = 0x18100;
+	chip_id |= FIELD_PREP(CHIPID_DDRCAP_MASK, ddr_capacity - 1);
+
+	switch (package_type) {
+	case PKG_QFN88:
+		chip_id |= FIELD_PREP(CHIPID_PAGEAGE_MASK, 0xc);
 		break;
-	case DDR_CAPACITY_1G:
-		chip_id = (package_type == PKG_QFN88 ? 0x1811c : 0x1811f);
+	case PKG_BGA205:
+		chip_id |= FIELD_PREP(CHIPID_PAGEAGE_MASK, 0xf);
 		break;
-	case DDR_CAPACITY_2G:
-		chip_id = (package_type == PKG_QFN88 ? 0x1812c : 0x1812f);
-		break;
-	case DDR_CAPACITY_4G:
-		chip_id = 0x1813f;
+	case PKG_QFN68:
+		chip_id |= FIELD_PREP(CHIPID_PAGEAGE_MASK, 0xb);
 		break;
 	default:
 		return -1;
