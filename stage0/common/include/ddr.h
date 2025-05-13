@@ -31,4 +31,27 @@ extern uint8_t ddr_capacity;
 extern uint8_t ddr_type;
 extern uint16_t ddr_rate;
 
+#define DDR_PATCH_REG(_addr, _val) \
+	{ .addr = (_addr), .val = (_val) }
+
+struct ddr_patch_reg {
+	uint32_t addr;
+	uint32_t val;
+};
+
+#define DDR_MASK_PATCH_REG(_addr, _mask, _val) \
+	{ .addr = (_addr), .mask = (_mask), .val = (_val) }
+
+struct ddr_mask_patch_reg {
+	uint32_t addr;
+	uint32_t mask;
+	uint32_t val;
+};
+
+void ddr_init(void);
+void ddr_pll_init(void);
+void ddr_pinmux_init(void);
+void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size);
+void ddr_update_mask_patch_reg(const struct ddr_mask_patch_reg *regs, unsigned int size);
+
 #endif /* _STAGE0_DDR_H */

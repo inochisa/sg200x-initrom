@@ -29,6 +29,8 @@ int main(void)
 	read_board_info();
 	rtc_init_stage0();
 
+	ddr_init();
+
 	while (1)
 		;
 }

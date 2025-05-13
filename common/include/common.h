@@ -15,6 +15,8 @@
 #define writew(v,c)	({ __io_bw(); __raw_writew((v),(volatile void *)(c)); __io_aw(); })
 #define writel(v,c)	({ __io_bw(); __raw_writel((v),(volatile void *)(c)); __io_aw(); })
 
+#define ARRAY_SIZE(_a) (sizeof(_a) / sizeof((_a)[0]))
+
 #define SYS_COUNTER_FREQ		25000000
 
 void udelay(uint32_t usec);
