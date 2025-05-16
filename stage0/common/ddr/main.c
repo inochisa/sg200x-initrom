@@ -1,6 +1,7 @@
 
 #include "common.h"
 #include "ddr.h"
+#include "log.h"
 
 extern const struct ddr_patch_reg ddrc_patch[];
 extern const unsigned int ddrc_patch_size;
@@ -47,11 +48,40 @@ void ddr_init(void)
 
 	ddr_phy_init();
 
-	// TODO: check setting
+	ddr_setting_check();
 
 	ddr_pinmux_init();
 
 	ddr_set_patch();
+
+	ddr_set_dfi_init_start();
+	ddr_phy_power_on_seq1();
+	ddr_polling_dfi_init_start();
+	ddr_int_isr_08();
+	ddr_phy_power_on_seq2();
+	ddr_set_dfi_init_complete();
+	ddr_phy_power_on_seq3();
+	ddr_polling_dfi_init_complete();
+	ddr_polling_sync_normal_mode();
+
+	ddr_do_bist_check();
+
+	INFO("TODO\n");
+
+	// TODO: low patch
+
+	if (ddr_type == DDR_TYPE_DDR3) {
+		// cvx16_wrlvl_req();
+	}
+
+	// TODO: do bist
+	// TODO: cvx16_rdglvl_req
+	// TODO: do bist
+	// TODO: cvx16_wdqlvl_req 1 2
+	// TODO: cvx16_wdqlvl_req 1 1
+	// TODO: cvx16_wdqlvl_req 1 0
+	// TODO: do bist
+	// TODO: misc update
 }
 
 void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size)

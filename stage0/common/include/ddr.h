@@ -49,9 +49,27 @@ struct ddr_mask_patch_reg {
 };
 
 void ddr_init(void);
-void ddr_pll_init(void);
 void ddr_pinmux_init(void);
 void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size);
 void ddr_update_mask_patch_reg(const struct ddr_mask_patch_reg *regs, unsigned int size);
+
+void ddr_pll_init(void);
+void ddr_adjust_pll_freq(void);
+void ddr_dll_cal(void);
+
+void ddr_setting_check(void);
+void ddr_en_rec_vol_mode(void);
+void ddr_set_dfi_init_start(void);
+void ddr_polling_dfi_init_start(void);
+void ddr_set_dfi_init_complete(void);
+void ddr_polling_dfi_init_complete(void);
+void ddr_polling_sync_normal_mode(void);
+void ddr_phy_power_on_seq1(void);
+void ddr_phy_power_on_seq2(void);
+void ddr_phy_power_on_seq3(void);
+void ddr_int_isr_08(void);
+void ddr_bist_wr_prbs_init(void);
+int ddr_bist_start_check(uint64_t *err_data_odd, uint64_t *err_data_even);
+void ddr_do_bist_check(void);
 
 #endif /* _STAGE0_DDR_H */

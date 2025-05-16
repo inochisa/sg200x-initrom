@@ -128,5 +128,5 @@ void ddr_pinmux_init(void)
 		break;
 	}
 
-	INFO("DDR pinmux init finish");
+	INFO("DDR pinmux init finish\n");
 }
