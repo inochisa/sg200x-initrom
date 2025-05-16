@@ -64,7 +64,7 @@ void ddr_init(void)
 	ddr_polling_dfi_init_complete();
 	ddr_polling_sync_normal_mode();
 
-	ddr_do_bist_check();
+	ddr_do_bist_prbs_check();
 
 	INFO("TODO\n");
 

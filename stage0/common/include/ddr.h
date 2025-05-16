@@ -70,6 +70,6 @@ void ddr_phy_power_on_seq3(void);
 void ddr_int_isr_08(void);
 void ddr_bist_wr_prbs_init(void);
 int ddr_bist_start_check(uint64_t *err_data_odd, uint64_t *err_data_even);
-void ddr_do_bist_check(void);
+void ddr_do_bist_prbs_check(void);
 
 #endif /* _STAGE0_DDR_H */

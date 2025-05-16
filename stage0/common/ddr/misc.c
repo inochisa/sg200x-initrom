@@ -319,14 +319,14 @@ int ddr_bist_start_check(uint64_t *err_data_odd, uint64_t *err_data_even)
 	return ret;
 }
 
-void ddr_do_bist_check(void)
+void ddr_do_bist_prbs_check(void)
 {
 	int ret;
 	uint64_t err_data_odd, err_data_even;
 
 	ddr_bist_wr_prbs_init();
 	if (ddr_bist_start_check(&err_data_odd, &err_data_even)) {
-		ERR("DDR: do bist failed, err data 0x%016lx 0x%016lx\n",
+		ERR("DDR: do prbs bist failed, err data 0x%016lx 0x%016lx\n",
 		    err_data_odd, err_data_even);
 	}
 
