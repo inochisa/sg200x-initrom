@@ -3,6 +3,7 @@
 #define _LOG_H
 
 #include "serial.h"
+#include "error.h"
 
 #ifndef FSBL_LOG_LEVEL
 #define FSBL_LOG_LEVEL	3
@@ -29,6 +30,7 @@ extern const char *fsbl_color_break;
 		FSBL_LOG_SET_COLOR(LOG_ERR_ID);		\
 		fsbl_printf(format,## __VA_ARGS__);	\
 		FSBL_LOG_RESET_COLOR();			\
+		initrom_hang();				\
 	} while (0)
 #else
 #define ERR(format, ...)
