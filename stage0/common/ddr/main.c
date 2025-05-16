@@ -60,6 +60,9 @@ void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size)
 
 	for (i = 0; i < size; ++i) {
 		const struct ddr_patch_reg *reg = &regs[i];
+
+		DEBUG("DDR: update 0x%08lx: val 0x%08x\n", addr, reg->val);
+
 		writel(reg->val, (unsigned long)reg->addr);
 	}
 }
@@ -72,9 +75,13 @@ void ddr_update_mask_patch_reg(const struct ddr_mask_patch_reg *regs, unsigned i
 	for (i = 0; i < size; ++i) {
 		const struct ddr_mask_patch_reg *reg = &regs[i];
 		unsigned long addr = reg->addr;
+
+		DEBUG("DDR: update 0x%08lx: val 0x%08x, mask 0x%08x\n",
+		      addr, reg->val, reg->mask);
+
 		val = readl(addr);
-		val &= reg->mask;
-		val |= reg->val;
+		val &= ~reg->mask;
+		val |= reg->val & reg->mask;
 		writel(val, addr);
 	}
 }
