@@ -22,6 +22,14 @@ static void ddr_phy_init(void)
 	writel(0x02620504, DDR_BASE + 0xa4);
 }
 
+extern const struct ddr_mask_patch_reg ddr_patch_regs[];
+extern const unsigned int ddr_patch_size;
+
+static void ddr_set_patch(void)
+{
+	ddr_update_mask_patch_reg(ddr_patch_regs, ddr_patch_size);
+}
+
 void ddr_init(void)
 {
 	ddr_pll_init();
@@ -43,7 +51,7 @@ void ddr_init(void)
 
 	ddr_pinmux_init();
 
-	// TODO: load patch reg
+	ddr_set_patch();
 }
 
 void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size)
