@@ -240,10 +240,12 @@ raw:
 				}
 			} else if ((format[1] == 'd') || (format[1] == 'i')) {
 				num = va_arg(args, long);
+				++format;
 				type = *format;
 			} else if ((format[1] == 'u') || (format[1] == 'o') ||
 				   (format[1] == 'x') || (format[1] == 'X')) {
 				num = va_arg(args, unsigned long);
+				++format;
 				type = *format;
 			}
 		}
