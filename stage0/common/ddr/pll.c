@@ -262,3 +262,80 @@ void ddr_dll_cal(void)
 
 	INFO("DDR: DDLCAL is OK\n");
 }
+
+void ddr_clk_disable_gating(void)
+{
+	uint32_t val;
+
+	// TOP_REG_CG_EN_PHYD_TOP      0
+	// TOP_REG_CG_EN_CALVL         1
+	// TOP_REG_CG_EN_WRLVL         2
+	// N/A                         3
+	// TOP_REG_CG_EN_WRDQ          4
+	// TOP_REG_CG_EN_RDDQ          5
+	// TOP_REG_CG_EN_PIGTLVL       6
+	// TOP_REG_CG_EN_RGTRACK       7
+	// TOP_REG_CG_EN_DQSOSC        8
+	// TOP_REG_CG_EN_LB            9
+	// TOP_REG_CG_EN_DLL_SLAVE     10 //0:a-on
+	// TOP_REG_CG_EN_DLL_MST       11 //0:a-on
+	// TOP_REG_CG_EN_ZQ            12
+	// TOP_REG_CG_EN_PHY_PARAM     13 //0:a-on
+	// 0b01001011110101
+	writel(0x000012F5, DDR_PHYD_BASE + 0x44);
+	// PHYD_SHIFT_GATING_EN
+	writel(0x00000000, DDR_BASE + 0x00F4);
+
+	val = readl(DDR_CTRL_BASE + 0x30); // phyd_stop_clk
+	val &= ~BIT(9);
+	writel(val, DDR_CTRL_BASE + 0x30);
+
+	val = readl(DDR_CTRL_BASE + 0x148); // dfi read/write clock gatting
+	val &= ~BIT(23);
+	val &= ~BIT(31);
+	writel(val, DDR_CTRL_BASE + 0x148);
+
+	INFO("DDR: disable clk gating\n");
+}
+
+void ddr_clk_enable_gating(void)
+{
+	uint32_t val;
+	// TOP_REG_CG_EN_PHYD_TOP      0
+	// TOP_REG_CG_EN_CALVL         1
+	// TOP_REG_CG_EN_WRLVL         2
+	// N/A                         3
+	// TOP_REG_CG_EN_WRDQ          4
+	// TOP_REG_CG_EN_RDDQ          5
+	// TOP_REG_CG_EN_PIGTLVL       6
+	// TOP_REG_CG_EN_RGTRACK       7
+	// TOP_REG_CG_EN_DQSOSC        8
+	// TOP_REG_CG_EN_LB            9
+	// TOP_REG_CG_EN_DLL_SLAVE     10 //0:a-on
+	// TOP_REG_CG_EN_DLL_MST       11 //0:a-on
+	// TOP_REG_CG_EN_ZQ            12
+	// TOP_REG_CG_EN_PHY_PARAM     13 //0:a-on
+	// 0b10110010000001
+	writel(0x00002C81, DDR_PHYD_BASE + 0x44);
+
+	//    #ifdef _mem_freq_1333
+	//    #ifdef DDR2
+	val = readl(DDR_CTRL_BASE + 0x190);
+	FIELD_MOD(val, GENMASK(28, 24), 6);
+	writel(val, DDR_CTRL_BASE + 0x190);
+	//    #endif
+
+	// PHYD_SHIFT_GATING_EN
+	writel(0x00030033, DDR_BASE + 0x00f4);
+
+	val = readl(DDR_CTRL_BASE + 0x30); // phyd_stop_clk
+	val |= BIT(9);
+	writel(val, DDR_CTRL_BASE + 0x30);
+
+	val = readl(DDR_CTRL_BASE + 0x148); // dfi read/write clock gatting
+	val |= BIT(23);
+	val |= BIT(31);
+	writel(val, DDR_CTRL_BASE + 0x148);
+
+	INFO("DDR: enable clk gating\n");
+}

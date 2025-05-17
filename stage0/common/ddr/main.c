@@ -2,6 +2,11 @@
 #include "common.h"
 #include "ddr.h"
 #include "log.h"
+#include "bits.h"
+
+const char *ddr_finish_format = "DDR: %s finish\n";
+const char *ddr_polling_format = "DDR: polling %s...";
+const char *ddr_polling_finsh = " done\n";
 
 extern const struct ddr_patch_reg ddrc_patch[];
 extern const unsigned int ddrc_patch_size;
@@ -49,6 +54,9 @@ static void ddr_set_high_patch(void)
 
 void ddr_init(void)
 {
+	uint32_t val;
+	uint8_t dram_cap;
+
 	ddr_pll_init();
 	ddrc_init();
 
@@ -82,33 +90,40 @@ void ddr_init(void)
 
 	ddr_do_bist_prbs_check();
 
-	INFO("TODO\n");
-
 	ddr_set_low_patch();
 
 	if (ddr_type == DDR_TYPE_DDR3) {
-		// cvx16_wrlvl_req();
+		ddr_wrlvl_req();
 	}
 
 	ddr_do_bist_prbs_check();
-	// TODO: cvx16_rdglvl_req
+
+	ddr_rdglvl_req();
 	ddr_do_bist_prbs_check();
-	// TODO: cvx16_wdqlvl_req 1 2
-	// TODO: cvx16_wdqlvl_req 1 1
-	// TODO: cvx16_wdqlvl_req 1 0
+
+	ddr_wdqlvl_req(1, 2);
+	ddr_wdqlvl_req(1, 1);
+	ddr_wdqlvl_req(1, 0);
 	ddr_do_bist_prbs_check();
-	// TODO: misc update
-	// TODO: cvx16_rdlvl_req 1
+
+
+	val = readl(DDR_BASE + 0x008c);
+	FIELD_MOD(val, GENMASK(7, 4), 1);
+	writel(val, DDR_BASE + 0x008c);
+	ddr_rdlvl_req(1);
 	ddr_do_bist_prbs_check();
+
 	ddr_set_high_patch();
-	// TODO: ctrl_init_detect_dram_size
-	// TODO: ctrl_init_update_by_dram_size
-	// TODO: cvx16_dram_cap_check
-	// TODO: cvx16_clk_gating_enable
+	ddr_init_detect_dram_size(&dram_cap);
+	ddr_init_update_by_dram_size(dram_cap);
+	ddr_clk_enable_gating();
 	ddr_do_bist_prbs_check();
-	// TODO: ddr_do_bist_sram_check
-	// TODO: axi_mon_latency_setting
-	// TODO: axi_mon_start_all
+	ddr_do_bist_sram_check();
+
+	axi_mon_latency_setting(0x5);
+	axi_mon_start_all();
+
+	INFO("DDR: init finished\n");
 }
 
 void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size)
