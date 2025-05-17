@@ -295,7 +295,7 @@ void ddr_clk_disable_gating(void)
 	val &= ~BIT(31);
 	writel(val, DDR_CTRL_BASE + 0x148);
 
-	INFO("DDR: disable clk gating\n");
+	DEBUG("DDR: disable clk gating\n");
 }
 
 void ddr_clk_enable_gating(void)
@@ -337,5 +337,5 @@ void ddr_clk_enable_gating(void)
 	val |= BIT(31);
 	writel(val, DDR_CTRL_BASE + 0x148);
 
-	INFO("DDR: enable clk gating\n");
+	DEBUG("DDR: enable clk gating\n");
 }

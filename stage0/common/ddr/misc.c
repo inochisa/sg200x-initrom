@@ -12,7 +12,7 @@ void ddr_setting_check(void)
 	uint32_t wrlat, val_en;
 	uint32_t _wrlat, _val_en;
 
-	INFO("ddr phy version: %08x\n", readl(DDR_PHY_BASE + 0x1000));
+	INFO("DDR: phy version: %08x\n", readl(DDR_PHY_BASE + 0x1000));
 
 	val = readl(DDR_CTRL_BASE + 0x190);
 
@@ -71,7 +71,7 @@ void ddr_en_rec_vol_mode(void)
 		writel(0x00001001, DDR_BASE + 0x0540);
 	}
 
-	INFO(ddr_finish_format, "en_rec_vol_mode");
+	DEBUG(ddr_finish_format, "en_rec_vol_mode");
 }
 
 void ddr_set_dfi_init_start(void)
@@ -89,7 +89,7 @@ void ddr_set_dfi_init_start(void)
 
 	writel(1, DDR_CTRL_BASE + 0x00000320);
 
-	INFO(ddr_finish_format, "dfi_init_start");
+	DEBUG(ddr_finish_format, "dfi_init_start");
 }
 
 void ddr_polling_dfi_init_start(void)
@@ -259,7 +259,7 @@ void ddr_bist_wr_prbs_init(void)
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
 
-	INFO(ddr_finish_format, "bist_wr_prbs_init");
+	DEBUG(ddr_finish_format, "bist_wr_prbs_init");
 }
 
 void ddr_int_isr_08(void)
@@ -326,7 +326,7 @@ void ddr_do_bist_prbs_check(void)
 		    err_data_odd, err_data_even);
 	}
 
-	INFO("DDR: prbs check is OK\n");
+	DEBUG("DDR: prbs check is OK\n");
 
 	return;
 }
@@ -381,7 +381,7 @@ void ddr_bist_wr_sram_init(void)
 #else
 	// TBD
 #endif
-	INFO(ddr_finish_format, "bist_wr_sram_init");
+	DEBUG(ddr_finish_format, "bist_wr_sram_init");
 }
 
 void ddr_do_bist_sram_check(void)
@@ -395,7 +395,7 @@ void ddr_do_bist_sram_check(void)
 		    err_data_odd, err_data_even);
 	}
 
-	INFO("DDR: sram check is OK\n");
+	DEBUG("DDR: sram check is OK\n");
 
 	return;
 }
@@ -441,7 +441,7 @@ void ddr_bist_wrlvl_init(void)
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
 
-	INFO(ddr_finish_format, "bist_wrlvl_init");
+	DEBUG(ddr_finish_format, "bist_wrlvl_init");
 }
 
 void ddr_bist_rdglvl_init(void)
@@ -482,7 +482,7 @@ void ddr_bist_rdglvl_init(void)
 #else
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
-	INFO(ddr_finish_format, "bist_rdglvl_init");
+	DEBUG(ddr_finish_format, "bist_rdglvl_init");
 }
 
 void ddr_bist_wdmlvl_init(void)
@@ -535,7 +535,7 @@ void ddr_bist_wdmlvl_init(void)
 #else
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
-	INFO(ddr_finish_format, "bist_wdmlvl_init");
+	DEBUG(ddr_finish_format, "bist_wdmlvl_init");
 }
 
 void ddr_bist_wdqlvl_init(uint32_t mode)
@@ -635,7 +635,7 @@ void ddr_bist_wdqlvl_init(uint32_t mode)
 #else
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
-	INFO(ddr_finish_format, "bist_wdqlvl_init");
+	DEBUG(ddr_finish_format, "bist_wdqlvl_init");
 }
 
 void ddr_bist_rdlvl_init(uint32_t mode)
@@ -777,7 +777,7 @@ void ddr_bist_rdlvl_init(uint32_t mode)
 #else
 	writel(0x00000008, DDR_BIST_BASE + 0x18);
 #endif
-	INFO(ddr_finish_format, "bist_rdlvl_init");
+	DEBUG(ddr_finish_format, "bist_rdlvl_init");
 }
 
 void ddr_synp_mrw(uint32_t addr, uint32_t data)
