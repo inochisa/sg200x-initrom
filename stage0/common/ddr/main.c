@@ -31,6 +31,22 @@ static void ddr_set_patch(void)
 	ddr_update_mask_patch_reg(ddr_patch_regs, ddr_patch_size);
 }
 
+extern const struct ddr_patch_reg ddr_low_patch_regs[];
+extern const unsigned int ddr_low_patch_size;
+
+static void ddr_set_low_patch(void)
+{
+	ddr_update_patch_reg(ddr_low_patch_regs, ddr_low_patch_size);
+}
+
+extern const struct ddr_patch_reg ddr_high_patch_regs[];
+extern const unsigned int ddr_high_patch_size;
+
+static void ddr_set_high_patch(void)
+{
+	ddr_update_patch_reg(ddr_high_patch_regs, ddr_high_patch_size);
+}
+
 void ddr_init(void)
 {
 	ddr_pll_init();
@@ -68,20 +84,31 @@ void ddr_init(void)
 
 	INFO("TODO\n");
 
-	// TODO: low patch
+	ddr_set_low_patch();
 
 	if (ddr_type == DDR_TYPE_DDR3) {
 		// cvx16_wrlvl_req();
 	}
 
-	// TODO: do bist
+	ddr_do_bist_prbs_check();
 	// TODO: cvx16_rdglvl_req
-	// TODO: do bist
+	ddr_do_bist_prbs_check();
 	// TODO: cvx16_wdqlvl_req 1 2
 	// TODO: cvx16_wdqlvl_req 1 1
 	// TODO: cvx16_wdqlvl_req 1 0
-	// TODO: do bist
+	ddr_do_bist_prbs_check();
 	// TODO: misc update
+	// TODO: cvx16_rdlvl_req 1
+	ddr_do_bist_prbs_check();
+	ddr_set_high_patch();
+	// TODO: ctrl_init_detect_dram_size
+	// TODO: ctrl_init_update_by_dram_size
+	// TODO: cvx16_dram_cap_check
+	// TODO: cvx16_clk_gating_enable
+	ddr_do_bist_prbs_check();
+	// TODO: ddr_do_bist_sram_check
+	// TODO: axi_mon_latency_setting
+	// TODO: axi_mon_start_all
 }
 
 void ddr_update_patch_reg(const struct ddr_patch_reg *regs, unsigned int size)

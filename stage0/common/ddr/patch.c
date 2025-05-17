@@ -1321,3 +1321,29 @@ const struct ddr_mask_patch_reg ddr_patch_regs[] = {
 };
 
 const unsigned int ddr_patch_size = ARRAY_SIZE(ddr_patch_regs);
+
+const struct ddr_patch_reg ddr_low_patch_regs[] = {
+	// disable auto PD/SR
+	DDR_PATCH_REG(0x08004000 + 0x30, 0x00000000),
+	// disable auto ctrl_upd
+	DDR_PATCH_REG(0x08004000 + 0x1a0, 0xC0400018),
+	// disable clock gating
+	DDR_PATCH_REG(0x0800a000 + 0x14, 0x00000fff),
+	// change xpi to single DDR burst
+	//DDR_PATCH_REG(0x08004000 + 0xc, 0x63746371),
+};
+
+const unsigned int ddr_low_patch_size = ARRAY_SIZE(ddr_low_patch_regs);
+
+const struct ddr_patch_reg ddr_high_patch_regs[] = {
+	// enable auto PD/SR
+	DDR_PATCH_REG(0x08004000 + 0x30, 0x00000002),
+	// enable auto ctrl_upd
+	DDR_PATCH_REG(0x08004000 + 0x1a0, 0x00400018),
+	// enable clock gating
+	DDR_PATCH_REG(0x0800a000 + 0x14, 0x00000000),
+	// change xpi to multi DDR burst
+	//DDR_PATCH_REG(0x08004000 + 0xc, 0x63786370),
+};
+
+const unsigned int ddr_high_patch_size = ARRAY_SIZE(ddr_low_patch_regs);
