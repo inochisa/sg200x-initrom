@@ -184,29 +184,21 @@ void ddr_adjust_pll_freq(void)
 	if (EN_PLL_SPEED_CHG) {
 		INFO("DDR: next pll speed %u\n", NEXT_PLL_SPEED);
 		if (NEXT_PLL_SPEED == 0) { // next clk_div40
-			val &= ~DDR_CUR_PLL_SPEED_MASK;
-			val |= FIELD_PREP(CUR_PLL_SPEED, DDR_NEXT_PLL_SPEED_MASK);
-
-			val &= ~DDR_NEXT_PLL_SPEED_MASK;
-			val |= FIELD_PREP(NEXT_PLL_SPEED, DDR_CUR_PLL_SPEED_MASK);
-
+			FIELD_MOD(val, DDR_NEXT_PLL_SPEED_MASK, CUR_PLL_SPEED);
+			FIELD_MOD(val, DDR_CUR_PLL_SPEED_MASK, NEXT_PLL_SPEED);
 			writel(val, DDR_PHYD_BASE + 0x4c);
+
 			ddr_clk_set_div40();
 		} else if (NEXT_PLL_SPEED == 0x2) { // next clk normal
-			val &= ~DDR_CUR_PLL_SPEED_MASK;
-			val |= FIELD_PREP(CUR_PLL_SPEED, DDR_NEXT_PLL_SPEED_MASK);
-
-			val &= ~DDR_NEXT_PLL_SPEED_MASK;
-			val |= FIELD_PREP(NEXT_PLL_SPEED, DDR_CUR_PLL_SPEED_MASK);
-
+			FIELD_MOD(val, DDR_NEXT_PLL_SPEED_MASK, CUR_PLL_SPEED);
+			FIELD_MOD(val, DDR_CUR_PLL_SPEED_MASK, NEXT_PLL_SPEED);
 			writel(val, DDR_PHYD_BASE + 0x4c);
+
 			ddr_clk_set_normal();
 		} else if (NEXT_PLL_SPEED == 0x1) { // next clk normal div_2
-			val &= ~DDR_CUR_PLL_SPEED_MASK;
-			val |= FIELD_PREP(CUR_PLL_SPEED, DDR_NEXT_PLL_SPEED_MASK);
-
-			val &= ~DDR_NEXT_PLL_SPEED_MASK;
-			val |= FIELD_PREP(NEXT_PLL_SPEED, DDR_CUR_PLL_SPEED_MASK);
+			FIELD_MOD(val, DDR_NEXT_PLL_SPEED_MASK, CUR_PLL_SPEED);
+			FIELD_MOD(val, DDR_CUR_PLL_SPEED_MASK, NEXT_PLL_SPEED);
+			writel(val, DDR_PHYD_BASE + 0x4c);
 
 			ddr_clk_set_div2();
 		}

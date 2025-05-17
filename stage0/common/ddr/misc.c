@@ -128,8 +128,7 @@ void ddr_polling_dfi_init_complete(void)
 	writel(0x00000000, DDR_CTRL_BASE + 0x00000320);
 
 	val = readl(DDR_CTRL_BASE + 0x000001b0);
-	val &= ~GENMASK(5, 0);
-	val |= FIELD_PREP(GENMASK(5, 0), 5);
+	FIELD_MOD(val, GENMASK(5, 0), 5);
 	writel(val, DDR_CTRL_BASE + 0x000001b0);
 
 	writel(0x00000001, DDR_CTRL_BASE + 0x00000320);
